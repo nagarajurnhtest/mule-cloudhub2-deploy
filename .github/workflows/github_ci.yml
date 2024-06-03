@@ -109,7 +109,7 @@ jobs:
     - name: Deploy to dev
       run: |
         artifactName=$(ls *.jar | head -1)
-        mvn deploy --settings .maven/settings.xml  -DskipMunitTests -Dappname_env='dev' -DMULE_ENV='${{vars.MULE_ENV}}' -DDEPLOY_TARGET='${{vars.DEPLOY_TARGET}}' -DDEPLOY_MULE_SERVER='${{vars.DEPLOY_MULE_SERVER}}' -DMULE_PROVIDER='${{vars.DEPLOY_PROVIDER}}'  -DDEPLOY_MULE_VERSION='${{vars.DEPLOY_MULE_VERSION}}'  -DDEPLOY_VCORE='${{vars.DEPLOY_VCORE}}' -DDEPLOY_FORWARD_SSL_SESSION=${{vars.DEPLOY_FORWARD_SSL_SESSION}} -DDEPLOY_LAST_MILE_SECURITY=${{vars.DEPLOY_LAST_MILE_SECURITY}} -DDEPLOY_PERSISTENT_OBJECT_STORE=${{vars.DEPLOY_PERSISTENT_OBJECT_STORE}} -DDEPLOY_REPLICA_COUNT='${{vars.REPLICA_COUNT}}' -DCONNECTEDAPP_CLIENT_ID='${secrets.CONNECTEDAPP_CLIENT_ID}' 
+        mvn deploy --settings .maven/settings.xml  -DskipMunitTests -Dappname_env='dev' -DMULE_ENV=dev -DDEPLOY_TARGET=Cloudhub-US-East-2 -DMULE_PROVIDER=MC -DDEPLOY_MULE_VERSION=4.6.2  -DDEPLOY_VCORE=1 -DDEPLOY_FORWARD_SSL_SESSION=true -DDEPLOY_LAST_MILE_SECURITY=true -DCONNECTEDAPP_CLIENT_ID='${secrets.CONNECTEDAPP_CLIENT_ID}' 
           
          #-Ddecryption.key="$KEY"
          mvn deploy   --settings .maven/settings.xml -DmuleDeploy -Dappname_env='dev' -DMULE_ENV='${{vars.MULE_ENV}}' -DDEPLOY_TARGET='${{vars.DEPLOY_TARGET}}'  -DDEPLOY_MULE_SERVER='${{vars.DEPLOY_MULE_SERVER}}' -DMULE_PROVIDER='${{vars.DEPLOY_PROVIDER}}'  -DDEPLOY_MULE_VERSION='${{vars.DEPLOY_MULE_VERSION}}'  -DDEPLOY_VCORE='${{vars.DEPLOY_VCORE}}' -DDEPLOY_FORWARD_SSL_SESSION=${{vars.DEPLOY_FORWARD_SSL_SESSION}} -DDEPLOY_LAST_MILE_SECURITY=${{vars.DEPLOY_LAST_MILE_SECURITY}} -DDEPLOY_PERSISTENT_OBJECT_STORE=${{vars.DEPLOY_PERSISTENT_OBJECT_STORE}} -DDEPLOY_REPLICA_COUNT='${{vars.REPLICA_COUNT}}' -DCONNECTEDAPP_CLIENT_ID='${secrets.CONNECTEDAPP_CLIENT_ID}' 
@@ -147,78 +147,3 @@ jobs:
           
          #-Ddecryption.key="$KEY"
          mvn deploy   --settings .maven/settings.xml -DmuleDeploy -Dappname_env='dev' -DMULE_ENV='${{vars.MULE_ENV}}' -DDEPLOY_TARGET='${{vars.DEPLOY_TARGET}}'  -DDEPLOY_MULE_SERVER='${{vars.DEPLOY_MULE_SERVER}}' -DMULE_PROVIDER='${{vars.DEPLOY_PROVIDER}}'  -DDEPLOY_MULE_VERSION='${{vars.DEPLOY_MULE_VERSION}}'  -DDEPLOY_VCORE='${{vars.DEPLOY_VCORE}}' -DDEPLOY_FORWARD_SSL_SESSION=${{vars.DEPLOY_FORWARD_SSL_SESSION}} -DDEPLOY_LAST_MILE_SECURITY=${{vars.DEPLOY_LAST_MILE_SECURITY}} -DDEPLOY_PERSISTENT_OBJECT_STORE=${{vars.DEPLOY_PERSISTENT_OBJECT_STORE}} -DDEPLOY_REPLICA_COUNT='${{vars.REPLICA_COUNT}}' 
-  
-  
- manual-approval:
-    environment: 'Prod'
-    runs-on: ubuntu-20.04
-    needs:
-      - deploy_to_qa
-    steps:
-      - name: Early exit
-        run: exit_with_success 
-      - run: echo "Approved to Prod"
-      
- deploy_to_uat:
-    permissions: read-all
-    continue-on-error: true
-    if: ${{ contains(github.ref, 'release') }} 
-    needs: 
-      - deploy_to_qa
-      - manual-approval
-    runs-on: ubuntu-latest
-    #runs-on: [self-hosted, development]
-    
-    steps:  
-    - run: echo 'MULE CONNECTED APP USER--${{vars.MULE_CONNECT_APP_USER}}'
-    - run: echo 'MULE CONNECTED APP USER--${{vars.MULE_CONNECT_APP_USER}}'
-    - name: Checkout this repo
-      uses: actions/checkout@v3
-    - name: Cache dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-    - uses: actions/download-artifact@v3
-      with:
-        name: artifacts
-    - name: Deploy to dev
-      env:
-        USERNAME: ${{vars.MULE_CONNECT_APP_USER}}
-        PASSWORD: ${{vars.MULE_CONNECT_APP_PWD}}
-        KEY: ${{ secrets.decryption_key }}
-      run: |
-        artifactName=$(ls *.jar | head -1)
-        mvn deploy --settings .maven/settings.xml  -DskipMunitTests -Dappname_env='dev' -DMULE_ENV='${{vars.MULE_ENV}}' -DDEPLOY_TARGET='${{vars.DEPLOY_TARGET}}' -DDEPLOY_MULE_SERVER='${{vars.DEPLOY_MULE_SERVER}}' -DMULE_PROVIDER='${{vars.DEPLOY_PROVIDER}}'  -DDEPLOY_MULE_VERSION='${{vars.DEPLOY_MULE_VERSION}}'  -DDEPLOY_VCORE='${{vars.DEPLOY_VCORE}}' -DDEPLOY_FORWARD_SSL_SESSION=${{vars.DEPLOY_FORWARD_SSL_SESSION}} -DDEPLOY_LAST_MILE_SECURITY=${{vars.DEPLOY_LAST_MILE_SECURITY}} -DDEPLOY_PERSISTENT_OBJECT_STORE=${{vars.DEPLOY_PERSISTENT_OBJECT_STORE}} -DDEPLOY_REPLICA_COUNT='${{vars.REPLICA_COUNT}}' 
-          
-         #-Ddecryption.key="$KEY"
-        mvn deploy --settings .maven/settings.xml  -DskipMunitTests -Dappname_env='dev' -DMULE_ENV='${{vars.MULE_ENV}}' -DDEPLOY_TARGET='${{vars.DEPLOY_TARGET}}' -DDEPLOY_MULE_SERVER='${{vars.DEPLOY_MULE_SERVER}}' -DMULE_PROVIDER='${{vars.DEPLOY_PROVIDER}}'  -DDEPLOY_MULE_VERSION='${{vars.DEPLOY_MULE_VERSION}}'  -DDEPLOY_VCORE='${{vars.DEPLOY_VCORE}}' -DDEPLOY_FORWARD_SSL_SESSION=${{vars.DEPLOY_FORWARD_SSL_SESSION}} -DDEPLOY_LAST_MILE_SECURITY=${{vars.DEPLOY_LAST_MILE_SECURITY}} -DDEPLOY_PERSISTENT_OBJECT_STORE=${{vars.DEPLOY_PERSISTENT_OBJECT_STORE}} -DDEPLOY_REPLICA_COUNT='${{vars.REPLICA_COUNT}}' 
-         #-Ddecryption.key="$KEY" 
- munit:
-    needs: build
-    runs-on: ubuntu-latest
-    #if: contains(fromJson('["refs/heads/dev", "refs/heads/release/*"]'), github.ref)    
-    if: ${{contains(github.ref, 'release/') }}
-    steps:
-    - name: Checkout this repo
-      uses: actions/checkout@v3
-    - name: Cache dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-    - name: Set up JDK 1.8
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'zulu'
-        java-version: 8
-    - name: Test with Maven
-      #env:
-        #nexus_username: ${{ secrets.nexus_username }}
-        #nexus_password: ${{ secrets.nexus_password }}
-        #KEY: ${{ secrets.decryption_key }}
-      run: mvn test --settings .maven/settings.xml -Dsecure.key="$KEY"
