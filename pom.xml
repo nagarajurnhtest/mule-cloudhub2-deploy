@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ffb8acd1-c3ef-428d-8f40-b6e01fa634c2</groupId>
-	<artifactId>mule-cloudhub2-deploy-tes1322331</artifactId>
+	<artifactId>mule-cloudhub2-deploy12</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
 
-	<name>mule-cloudhub2-deploy-tes1322331</name>
+	<name>mule-cloudhub2-deploy</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
