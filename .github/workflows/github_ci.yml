@@ -39,6 +39,10 @@ jobs:
         distribution: 'zulu'
         java-version: 8
     - name: Build with Maven
+      env:
+        USERNAME: ${{ secrets.CONNECTED_APP_CLIENT_ID }}
+        PASSWORD: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
+        KEY: ${{ secrets.decryption_key }}    
       #run: mvn --settings .maven/settings.xml clean install -e -X --file pom.xml
       run: mvn -B  package --file pom.xml --settings .maven/settings.xml -DskipMunitTests
 
