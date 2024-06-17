@@ -70,7 +70,7 @@ jobs:
       name: Dev
     if: ${{ contains(github.ref, 'dev')}}
     
-    needs: build
+    needs: job2
     runs-on: ubuntu-latest
     steps:  
     - run: echo 'PROVIDER***--${{vars.DEPLOY_PROVIDER}}'
