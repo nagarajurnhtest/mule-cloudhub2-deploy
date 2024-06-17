@@ -61,7 +61,8 @@ jobs:
  deploy_to_dev:
     environment:
       name: Dev
-    if: ${{ contains(github.ref, 'dev') }}
+    if: ${{ contains(github.ref, 'dev') || needs.check-if-there-are-commits.outputs.alive == 'true' }}
+    
     needs: build
     runs-on: ubuntu-latest
     steps:  
