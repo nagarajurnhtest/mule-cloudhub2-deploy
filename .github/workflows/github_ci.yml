@@ -72,7 +72,7 @@ jobs:
           echo "$i=>${array[i]}"
           echo "${{ github.actor }}"
           echo "$i"
-          if [[ "${array[i]}" == "${{ github.actor }}" ]] 
+          if [[ "${{ vars.UAT_PROD_APPROVERS }}" == "${{ github.actor }}" ]] 
           then
           echo "Triggering actor is an UAT Approver"
           is_uat_prod_approver="true"
