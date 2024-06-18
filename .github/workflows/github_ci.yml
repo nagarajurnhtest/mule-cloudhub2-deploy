@@ -68,7 +68,7 @@ jobs:
  deploy_to_dev:
     environment:
       name: Dev
-    if: ${{ contains(github.ref, 'dev') || !contains(github.event.head_commit.message, '#docs')}}
+    if: ${{ contains(github.ref, 'dev') || !contains(github.event.head_commit.message, 'deploy_to_dev')}}
     #if: ${{ !contains(github.event.head_commit.message, '#docs') }}
     needs: build
     runs-on: ubuntu-latest
