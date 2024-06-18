@@ -57,18 +57,38 @@ jobs:
       with:
           name: artifacts
           path: target/*.jar
- Skipped-Job:
-    name: skipped job
+ check_UAT_PROD_Approvers:
     needs: build
-    runs-on: [self-hosted]
-    if: 1 != 1
+    runs-on: ubuntu-latest
+    environment:
+      name: UAT
     steps:
-    - name: write to console 1
-      run: Write-Host "I should be skipped"    
+     - name: Check main branch
+       run: |
+          uat_prod_approvers="${{vars.UAT_PROD_APPROVERS}}"
+          array=(${uat_prod_approvers//,/ })
+          for i in "${!array[@]}"
+          do
+          echo "$i=>${array[i]}"
+          echo "${{ github.actor }}"
+          echo "$i"
+          if [[ ${array[i]} == "${{ github.actor }}" ]] 
+          then
+          echo "Triggering actor is an UAT Approver"
+          is_uat_prod_approver="true"
+          break
+          else
+           echo "Triggering actor is not UAT Approver"
+           is_uat_prod_approver="false"
+           break
+          fi
+          done
+          echo " ${{ vars.is_uat_prod_approver}}"    
  deploy_to_dev:
     environment:
       name: Dev
-    if: ${{ contains(github.ref, 'dev') || contains(github.event.head_commit.message, 'deploy_to_dev')}}
+    #if: ${{ contains(github.ref, 'dev') || !contains(needs.*.result, 'skipped')}}
+    if: ${{ (contains(github.ref, 'dev') ) && (github.actor   != github.triggering_actor  ) && (vars.is_uat_prod_approver == 'true')}}
     #if: ${{ !contains(github.event.head_commit.message, '#docs') }}
     needs: Skipped-Job
     runs-on: ubuntu-latest
