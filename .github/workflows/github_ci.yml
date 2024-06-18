@@ -57,19 +57,20 @@ jobs:
       with:
           name: artifacts
           path: target/*.jar
- Skipped-Job:
-    name: skipped job
-    needs: build
-    runs-on: [self-hosted]
-    if: 1 != 1
-    steps:
-    - name: write to console 1
-      run: Write-Host "I should be skipped"    
+ # Skipped-Job:
+ #    name: skipped job
+ #    needs: build
+ #    runs-on: [self-hosted]
+ #    if: 1 != 1
+ #    steps:
+ #    - name: write to console 1
+ #      run: Write-Host "I should be skipped"    
  deploy_to_dev:
     environment:
       name: Dev
-    if: ${{ contains(github.ref, 'dev') || always() && needs.Skipped-Job.result != 'skipped'}}
-    needs: Skipped-Job
+    if: ${{ contains(github.ref, 'dev') || !contains(github.event.head_commit.message, '#docs')}}
+    #if: ${{ !contains(github.event.head_commit.message, '#docs') }}
+    needs: build
     runs-on: ubuntu-latest
     steps:  
     - run: echo 'PROVIDER***--${{vars.DEPLOY_PROVIDER}}'
