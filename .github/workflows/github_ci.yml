@@ -68,7 +68,7 @@ jobs:
  deploy_to_dev:
     environment:
       name: Dev
-    if: ${{ contains(github.ref, 'dev') || always() && needs.Skipped-Job.result != 'failure'}}
+    if: ${{ contains(github.ref, 'dev') || always() && needs.Skipped-Job.result != 'skipped'}}
     needs: Skipped-Job
     runs-on: ubuntu-latest
     steps:  
