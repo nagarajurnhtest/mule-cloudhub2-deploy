@@ -67,7 +67,7 @@ jobs:
  deploy_to_dev:
     environment:
       name: Dev
-    if: ${{ contains(github.ref, 'dev') || always() && needs.Skipped-Job.result != 'failed' # this should run eventhough needs the skipped-job }}
+    if: ${{ contains(github.ref, 'dev') || always() && needs.Skipped-Job.result != 'failed'}}
     needs: Skipped-Job
     runs-on: ubuntu-latest
     steps:  
