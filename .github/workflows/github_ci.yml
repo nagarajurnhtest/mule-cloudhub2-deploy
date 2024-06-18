@@ -57,20 +57,18 @@ jobs:
       with:
           name: artifacts
           path: target/*.jar
- job2:
-    name: Skippable Step
-    if: ${{1 == 1}}
-    needs: [build]
-    runs-on: ubuntu-latest
+ Skipped-Job:
+    name: skipped job
+    runs-on: [self-hosted]
+    if: 1 != 1
     steps:
-      - name: Step2
-        run: exit 1       
+    - name: write to console 1
+      run: Write-Host "I should be skipped"    
  deploy_to_dev:
     environment:
       name: Dev
-    if: ${{ contains(github.ref, 'dev')}}
-    
-    needs: job2
+    if: ${{ contains(github.ref, 'dev') || always() && needs.Skipped-Job.result != 'failed' # this should run eventhough needs the skipped-job }}
+    needs: Skipped-Job
     runs-on: ubuntu-latest
     steps:  
     - run: echo 'PROVIDER***--${{vars.DEPLOY_PROVIDER}}'
