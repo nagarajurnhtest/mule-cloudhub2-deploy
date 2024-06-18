@@ -88,9 +88,9 @@ jobs:
     environment:
       name: Dev
     #if: ${{ contains(github.ref, 'dev') || !contains(needs.*.result, 'skipped')}}
-    if: ${{ (contains(github.ref, 'dev') ) && (github.actor   != github.triggering_actor  ) && (vars.is_uat_prod_approver == 'true')}}
+    #if: ${{ (contains(github.ref, 'dev') ) && (github.actor   != github.triggering_actor  ) && (vars.is_uat_prod_approver == 'true')}}
     #if: ${{ !contains(github.event.head_commit.message, '#docs') }}
-    needs: check_UAT_PROD_Approvers
+    needs: ${{needs.check_UAT_PROD_Approvers.outputs.is_uat_prod_approver}}="true"
     runs-on: ubuntu-latest
     steps:  
     - run: echo 'PROVIDER***--${{vars.DEPLOY_PROVIDER}}'
