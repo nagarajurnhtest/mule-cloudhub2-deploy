@@ -59,6 +59,7 @@ jobs:
           path: target/*.jar
  Skipped-Job:
     name: skipped job
+    needs: build
     runs-on: [self-hosted]
     if: 1 != 1
     steps:
