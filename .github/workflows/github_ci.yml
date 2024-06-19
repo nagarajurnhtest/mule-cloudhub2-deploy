@@ -76,6 +76,7 @@ jobs:
           then
           echo "Triggering actor is an UAT Approver"
           is_uat_prod_approver="true"
+          echo is_uat_prod_approver
           break
           else
            echo "Triggering actor is not UAT Approver"
@@ -83,6 +84,7 @@ jobs:
            break
           fi
           done
+          echo is_uat_prod_approver
           echo " ${{ vars.is_uat_prod_approver}}"    
  deploy_to_dev:
     environment:
@@ -92,10 +94,11 @@ jobs:
     #if: ${{ !contains(github.event.head_commit.message, '#docs') }}
     #needs: ${{needs.check_UAT_PROD_Approvers.outputs.is_uat_prod_approver}}
     needs: check_UAT_PROD_Approvers
-    if: needs.check_UAT_PROD_Approvers.outputs.is_uat_prod_approver == 'false'
+    if: needs.check_UAT_PROD_Approvers.outputs.is_uat_prod_approver != 'false'
     
     runs-on: ubuntu-latest
     steps:  
+    
     - run: echo 'PROVIDER***--${{vars.DEPLOY_PROVIDER}}'
     - run: echo 'REPLICA COUNT***--${{vars.REPLICA_COUNT}}'
 
