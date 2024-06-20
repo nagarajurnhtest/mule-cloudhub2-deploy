@@ -88,7 +88,7 @@ jobs:
            break
           fi
           done
-          echo $is_uat_prod_approver
+          echo $is_uat_prod_approver >> $OUTPUT
           echo " ${{ vars.is_uat_prod_approver}}"  
           echo "${{ vars.is_uat_prod_approver}} "
  deploy_to_dev:
