@@ -98,6 +98,7 @@ jobs:
     #if: ${{ !contains(github.event.head_commit.message, '#docs') }}
     #needs: ${{needs.check_UAT_PROD_Approvers.outputs.is_uat_prod_approver}}
     needs: check_UAT_PROD_Approvers
+    if: needs.check_UAT_PROD_Approvers.outputs.is_uat_prod_approver == true
     #if: needs.b.result == 'true' 
     runs-on: ubuntu-latest
     steps:  
