@@ -94,7 +94,7 @@ jobs:
     environment:
       name: Dev
     #if: ${{ contains(github.ref, 'dev') || !contains(needs.*.result, 'skipped')}}
-    if: ${{ (contains(github.ref, 'dev') ) && (github.actor   != github.triggering_actor  ) && (vars.is_uat_prod_approver == 'true')}}
+    if: ${{(vars.is_uat_prod_approver == 'true')}}
     #if: ${{ !contains(github.event.head_commit.message, '#docs') }}
     #needs: ${{needs.check_UAT_PROD_Approvers.outputs.is_uat_prod_approver}}
     needs: check_UAT_PROD_Approvers
