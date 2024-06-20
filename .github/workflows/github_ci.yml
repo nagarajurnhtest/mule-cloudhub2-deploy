@@ -2,6 +2,8 @@
 
 name: CI
 
+env: 
+  is_uat_prod_approver: "false"
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events for all branches
@@ -10,6 +12,8 @@ on:
   branches: ["develop","main"]
  pull_request:
   branches: ["develop","main"]
+
+
 
 
 jobs:
@@ -74,9 +78,9 @@ jobs:
           echo "$i"
           if [[ "${{ vars.UAT_PROD_APPROVERS }}" == "${{ github.actor }}" ]] 
           then
-          echo "Triggering actor is an UAT Approver"
-          is_uat_prod_approver="true"
-          echo is_uat_prod_approver
+           echo "Triggering actor is an UAT Approver"
+           is_uat_prod_approver="true"
+           echo is_uat_prod_approver
           break
           else
            echo "Triggering actor is not UAT Approver"
@@ -84,7 +88,7 @@ jobs:
            break
           fi
           done
-          echo ${{ is_uat_prod_approver }}
+          echo $is_uat_prod_approver
           echo " ${{ vars.is_uat_prod_approver}}"    
  deploy_to_dev:
     environment:
