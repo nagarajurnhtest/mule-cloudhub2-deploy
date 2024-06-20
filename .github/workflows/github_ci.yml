@@ -90,12 +90,12 @@ jobs:
           done
           echo $is_uat_prod_approver
           echo " ${{ vars.is_uat_prod_approver}}"  
-          echo "is_uat_prod_approver=${{ vars.is_uat_prod_approver}}" >> $OUTPUT
+          echo "${{ vars.is_uat_prod_approver}}" >> $OUTPUT
  deploy_to_dev:
     environment:
       name: Dev
     #if: ${{ contains(github.ref, 'dev') || !contains(needs.*.result, 'skipped')}}
-    if: needs.check_UAT_PROD_Approvers.output.is_uat_prod_approver == true
+    if: needs.check_UAT_PROD_Approvers.output == true
     #if: ${{ !contains(github.event.head_commit.message, '#docs') }}
     #needs: ${{needs.check_UAT_PROD_Approvers.outputs.is_uat_prod_approver}}
     needs: check_UAT_PROD_Approvers
