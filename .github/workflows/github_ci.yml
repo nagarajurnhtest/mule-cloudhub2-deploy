@@ -106,22 +106,22 @@ jobs:
     - run: echo 'PROVIDER***--${{vars.DEPLOY_PROVIDER}}'
     - run: echo 'REPLICA COUNT***--${{vars.REPLICA_COUNT}}'
 
-    - name: Checkout this repo
-      uses: actions/checkout@v3
-    - name: Cache dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-    - uses: actions/download-artifact@v3
-      with:
-        name: artifacts
-    - name: Deploy to dev
-      env:
-        CONNECTED_APP_CLIENT_ID: ${{ secrets.CONNECTED_APP_CLIENT_ID }}
-        CONNECTED_APP_CLIENT_SECRET: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
-        KEY: ${{ secrets.decryption_key }}
-      run: |
-        mvn deploy --settings .maven/settings.xml  -DskipMunitTests -Dappname_env='dev' -Denvironment=Sandbox -DMULE_ENV=dev -DDEPLOY_TARGET=Cloudhub-US-East-2 -DMULE_PROVIDER=MC -DDEPLOY_MULE_VERSION=4.6.2  -DDEPLOY_VCORE=1 -DDEPLOY_FORWARD_SSL_SESSION=true -DDEPLOY_LAST_MILE_SECURITY=true   
+    # - name: Checkout this repo
+    #   uses: actions/checkout@v3
+    # - name: Cache dependencies
+    #   uses: actions/cache@v3
+    #   with:
+    #     path: ~/.m2/repository
+    #     key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-maven-
+    # - uses: actions/download-artifact@v3
+    #   with:
+    #     name: artifacts
+    # - name: Deploy to dev
+    #   env:
+    #     CONNECTED_APP_CLIENT_ID: ${{ secrets.CONNECTED_APP_CLIENT_ID }}
+    #     CONNECTED_APP_CLIENT_SECRET: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
+    #     KEY: ${{ secrets.decryption_key }}
+    #   run: |
+    #     mvn deploy --settings .maven/settings.xml  -DskipMunitTests -Dappname_env='dev' -Denvironment=Sandbox -DMULE_ENV=dev -DDEPLOY_TARGET=Cloudhub-US-East-2 -DMULE_PROVIDER=MC -DDEPLOY_MULE_VERSION=4.6.2  -DDEPLOY_VCORE=1 -DDEPLOY_FORWARD_SSL_SESSION=true -DDEPLOY_LAST_MILE_SECURITY=true   
