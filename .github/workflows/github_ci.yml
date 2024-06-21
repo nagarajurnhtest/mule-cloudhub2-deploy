@@ -64,7 +64,7 @@ jobs:
  check_UAT_PROD_Approvers:
     needs: build
     outputs:
-      output1: ${{ steps.step1.outputs.is_uat_prod_approver }}
+      output1: ${{ steps.step1.outputs.test }}
     runs-on: ubuntu-latest
     environment:
       name: UAT
@@ -82,7 +82,7 @@ jobs:
           then
            echo "Triggering actor is an UAT Approver"
            is_uat_prod_approver="true"
-           echo "is_uat_prod_approver=true" >> "$GITHUB_OUTPUT"
+           run: echo "is_uat_prod_approver=true" >> "$GITHUB_OUTPUT"
            echo is_uat_prod_approver
           break
           else
@@ -98,7 +98,7 @@ jobs:
     environment:
       name: Dev
     #if: ${{ contains(github.ref, 'dev') || !contains(needs.*.result, 'skipped')}}
-    if: ${{ contains(needs.check_UAT_PROD_Approvers.outputs.is_uat_prod_approver,'true') }}
+    if: ${{needs.job1.outputs.output1}}
     #if: ${{ !contains(github.event.head_commit.message, '#docs') }}
     #needs: ${{needs.check_UAT_PROD_Approvers.outputs.is_uat_prod_approver}}
     needs: check_UAT_PROD_Approvers
