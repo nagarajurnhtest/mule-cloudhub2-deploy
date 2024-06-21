@@ -92,8 +92,9 @@ jobs:
           fi
           done
           #echo $is_uat_prod_approver >> $OUTPUT
-          echo " ${{ vars.is_uat_prod_approver}}"  
-          echo "${{ vars.is_uat_prod_approver}} "
+          echo $GITHUB_OUTPUT
+          #echo " ${{ vars.is_uat_prod_approver}}"  
+          #echo "${{ vars.is_uat_prod_approver}} "
  deploy_to_dev:
     environment:
       name: Dev
