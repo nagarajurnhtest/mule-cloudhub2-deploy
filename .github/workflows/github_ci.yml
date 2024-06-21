@@ -64,7 +64,7 @@ jobs:
  check_UAT_PROD_Approvers:
     needs: build
     outputs:
-      output1: ${{ steps.step1.outputs.test }}
+      output1: ${{ steps.step1.outputs.is_uat_prod_approver }}
     runs-on: ubuntu-latest
     environment:
       name: UAT
