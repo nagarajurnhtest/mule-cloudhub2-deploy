@@ -95,7 +95,7 @@ jobs:
           done
           #echo $is_uat_prod_approver >> $OUTPUT
           echo $GITHUB_OUTPUT
-          echo steps.set.outputs.run_job_b
+          #echo steps.set.outputs.run_job_b
           #echo " ${{ vars.is_uat_prod_approver}}"  
           #echo "${{ vars.is_uat_prod_approver}} "
            outputs:
@@ -104,7 +104,7 @@ jobs:
     environment:
       name: Dev
     #if: ${{ contains(github.ref, 'dev') || !contains(needs.*.result, 'skipped')}}
-    if: ${{ needs.check_UAT_PROD_Approvers.outputs.run_job_b }}
+    if: needs.check_UAT_PROD_Approvers.outputs.run_job_b == 'yes
     #if: ${{ !contains(github.event.head_commit.message, '#docs') }}
     #needs: ${{needs.check_UAT_PROD_Approvers.outputs.is_uat_prod_approver}}
     needs: check_UAT_PROD_Approvers
