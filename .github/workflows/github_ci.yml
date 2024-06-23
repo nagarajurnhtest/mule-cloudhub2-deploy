@@ -81,7 +81,7 @@ jobs:
           if [[ "${{ vars.UAT_PROD_APPROVERS }}" == "${{ github.actor }}" ]] 
           then
            echo "Triggering actor is an UAT Approver"
-           echo "::set-output name=run_job_b::yes"
+           #echo "::set-output name=run_job_b::yes"
            echo "run_job_b=yes" >> $GITHUB_OUTPUT
            #is_uat_prod_approver="true"
            #echo "is_uat_prod_approver=true" >> "$GITHUB_OUTPUT"
