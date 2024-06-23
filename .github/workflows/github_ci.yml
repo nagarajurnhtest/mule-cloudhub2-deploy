@@ -72,8 +72,9 @@ jobs:
       name: UAT
     steps:
      - name: Check main branch
-     - id: set
        run: |
+          - run: echo "Check main branch"
+          - id: set
           uat_prod_approvers="${{vars.UAT_PROD_APPROVERS}}"
           array=(${uat_prod_approvers//,/ })
           for i in "${!array[@]}"
