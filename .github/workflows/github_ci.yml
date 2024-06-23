@@ -72,6 +72,7 @@ jobs:
       name: UAT
     steps:
      - name: Check main branch
+     - id: set
        run: |
           uat_prod_approvers="${{vars.UAT_PROD_APPROVERS}}"
           array=(${uat_prod_approvers//,/ })
@@ -97,7 +98,7 @@ jobs:
           done
           #echo $is_uat_prod_approver >> $OUTPUT
           echo $GITHUB_OUTPUT
-          #echo steps.set.outputs.run_job_b
+          echo steps.set.outputs.run_job_b
           #echo " ${{ vars.is_uat_prod_approver}}"  
           #echo "${{ vars.is_uat_prod_approver}} "
 
