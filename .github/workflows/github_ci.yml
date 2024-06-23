@@ -65,6 +65,8 @@ jobs:
     #needs: build
     # outputs:
     #   output1: ${{ steps.step1.outputs.is_uat_prod_approver }}
+      outputs:
+        run_job_b: ${{ steps.set.outputs.run_job_b }}
     runs-on: ubuntu-latest
     environment:
       name: UAT
@@ -98,8 +100,7 @@ jobs:
           #echo steps.set.outputs.run_job_b
           #echo " ${{ vars.is_uat_prod_approver}}"  
           #echo "${{ vars.is_uat_prod_approver}} "
-           outputs:
-            run_job_b: ${{ steps.set.outputs.run_job_b }}
+
  deploy_to_dev:
     environment:
       name: Dev
